@@ -5,8 +5,12 @@ curvas = 1
 par_ordenado = False
 texto_x = "Abscissa"
 texto_y = "Ordenada"
+separador = "t"
 
 def plot_data():
+    global title, curvas, par_ordenado, texto_x, texto_y, separador
+
+
     while True:
         # Questão 1
         titulo = input("Digite o título do gráfico (ou deixe em branco para manter o anterior ou o padrão): ")
@@ -29,37 +33,95 @@ def plot_data():
         else:
             par_ordenado = False if tipo_dados == 1 else True
 
-         # Questão 4
+        if par_ordenado:
+            # Questão 4
+            separador_dados = input("Qual é o separador de dados do par ordenado? ")
+            if not separador_dados:
+                separador_dados = separador
+            else:
+                separador = separador_dados
+
+         # Questão 5
         abscissa_texto = input("Digite o texto do eixo da abscissa: ")
         if not abscissa_texto:
             abscissa_texto = texto_x
         else:
             texto_x = abscissa_texto
 
-        # Questão 5
-        abscissa_texto = input("Digite o texto do eixo da abscissa: ")
-        if not abscissa_texto:
-            abscissa_texto = texto_x
+        # Questão 6
+        ordenada_texto = input("Digite o texto do eixo da ordenada: ")
+        if not ordenada_texto:
+            ordenada_texto = texto_y
         else:
-            texto_x = abscissa_texto
+            texto_y = ordenada_texto
 
          
 
         for _ in range(num_curvas):
+
+            abscissa = []
+            ordenada = []
             
-            if tipo_dados == '1':
-                abscissa = [i+1 for i in range(len(ordenada))]
-                abscissa_texto = input("Digite o texto do eixo da abscissa: ")
-                ordenada_texto = input("Digite o texto do eixo da ordenada: ")
-                ordenada = [float(val) for val in input("Digite os dados da ordenada (separados por espaços): ").split()]
-            elif tipo_dados == '2':
-                abscissa_texto = input("Digite o texto do eixo da abscissa: ")
-                ordenada_texto = input("Digite o texto do eixo da ordenada: ")
-                abscissa = [float(val) for val in input("Digite os dados da abscissa (separados por espaços): ").split()]
-                ordenada = [float(val) for val in input("Digite os dados da ordenada (separados por espaços): ").split()]
+            print(f"Curva {_+1}/{num_curvas}")
+
+            # Questão 7
+            label = input("Digite a legenda da curva: ")
+
+            # Questão 8
             
-            # Plotar curva
-            plt.plot(abscissa, ordenada, label=f'Curva {_+1}')
+            if tipo_dados == 1:
+                print("Cole os dados da ordenada: ")
+                while True:
+                    entrada = input()
+                    if entrada == '':
+                        break
+                    ordenada.append(float(entrada))
+                
+                # Plotar curva
+                plt.plot(range(1, len(ordenada) + 1), ordenada, label=label)
+
+                
+            else:
+                print(f"Cole os dados da abscissa e ordenada separados por \"{separador}\": ")
+                while True:
+                    entrada = input()
+                    if entrada == '':
+                        break
+                    partes = entrada.split(separador)
+                    if len(partes) != 2:
+                        print(f"Por favor, insira os dados separados corretamente por \"{separador}\".")
+                        continue
+                    abscissa.append(float(partes[0]))
+                    ordenada.append(float(partes[1]))
+
+                # Questão 9
+                
+                try:
+                    deslocamento = float(input("Digite o deslocamento da abscissa (se necessário): "))
+                    if deslocamento:
+                        # Subtrai o valor de cada elemento na lista original
+                        for i in range(len(abscissa)):
+                            abscissa[i] += deslocamento
+                except:
+                    pass
+                
+
+                # Plotar curva
+                plt.plot(abscissa, ordenada, label=label)
+            
+
+
+
+                
+
+     #   plt.rcParams.update({
+   #'figure.figsize': (10, 8),    # Tamanho da figura
+   # 'font.size': 14,              # Tamanho da fonte geral
+   # 'axes.titlesize': 40,         # Tamanho do título
+   # 'axes.labelsize': 16,         # Tamanho dos nomes dos eixos
+   # 'xtick.labelsize': 14,        # Tamanho dos rótulos do eixo x
+   # 'ytick.labelsize': 14,        # Tamanho dos rótulos do eixo y
+   #     })
 
         # Configurar gráfico
         plt.title(titulo)
