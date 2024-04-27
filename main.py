@@ -18,6 +18,8 @@ def plot_data():
             titulo = title
         else:
             title = titulo
+        
+        #titulo = r"{}".format(titulo)
 
         # Questão 2
         num_curvas = int(input("Digite o número de curvas no mesmo plot: "))
@@ -123,8 +125,19 @@ def plot_data():
    # 'ytick.labelsize': 14,        # Tamanho dos rótulos do eixo y
    #     })
 
+        def transformar_string(string):
+            partes = string.split(';')  # Divide a string em partes onde encontra '\n'
+            print(partes)
+            titulo = '\n'.join(partes)   # Junta as partes com '\n' usando join
+            return f'{titulo}'
+        
         # Configurar gráfico
-        plt.title(titulo)
+        plt.title(transformar_string(titulo))
+        # Adicionando o título ao gráfico
+        #plt.text(0.5, 1.05, titulo, horizontalalignment='center', fontsize=16, transform=plt.gca().transAxes)
+
+        
+
         plt.xlabel(abscissa_texto)
         plt.ylabel(ordenada_texto)
         plt.legend()
